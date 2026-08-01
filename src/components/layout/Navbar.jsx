@@ -1,8 +1,7 @@
-import { useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { Bell } from "lucide-react";
 import { NAV_ITEMS } from "../../constants/navigation";
 import { useAuth } from "../../hooks/useAuth";
-import { signOutUser } from "../../firebase/auth";
 
 export default function Navbar() {
   const { user } = useAuth();
@@ -26,7 +25,7 @@ export default function Navbar() {
         <button className="rounded-lg p-2 text-zinc-400 hover:bg-zinc-900 hover:text-zinc-100">
           <Bell className="h-4 w-4" />
         </button>
-        <button onClick={signOutUser} title="Sign out">
+        <NavLink to="/settings" title="Settings">
           {user?.photoURL ? (
             <img
               src={user.photoURL}
@@ -36,7 +35,7 @@ export default function Navbar() {
           ) : (
             <div className="h-8 w-8 rounded-full bg-zinc-800" />
           )}
-        </button>
+        </NavLink>
       </div>
     </header>
   );
