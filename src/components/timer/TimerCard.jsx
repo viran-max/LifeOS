@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Pause, Play, Square } from 'lucide-react'
 import { useTimer } from '../../hooks/useTimer'
-import SessionModal from './SessionModal'
 import { useAuth } from '../../hooks/useAuth'
+import { useGoals } from '../../hooks/useGoals'
+import SessionModal from './SessionModal'
+import GoalSelect from './GoalSelect'
 
 function formatTime(totalSeconds) {
   const hours = Math.floor(totalSeconds / 3600)
@@ -13,13 +15,22 @@ function formatTime(totalSeconds) {
 }
 
 export default function TimerCard() {
-    const { user } = useAuth()
+  const { user } = useAuth()
+  const { goals } = useGoals()
   const { status, elapsedSeconds, start, pause, resume, finish } = useTimer()
   const [pendingDuration, setPendingDuration] = useState(null)
+  const [selectedGoalId, setSelectedGoalId] = useState('none')
+
+  const activeGoal = goals.find((g) => g.id === selectedGoalId)
 
   const handleFinish = () => {
     const duration = finish()
     if (duration > 0) setPendingDuration(duration)
+  }
+
+  const handleSessionSaved = () => {
+    setPendingDuration(null)
+    setSelectedGoalId('none')
   }
 
   return (
@@ -28,6 +39,17 @@ export default function TimerCard() {
       <p className="mt-1 font-mono text-4xl font-semibold tracking-tight text-zinc-50">
         {formatTime(elapsedSeconds)}
       </p>
+
+      <div className="mt-4">
+        {status === 'idle' ? (
+          <GoalSelect goals={goals} value={selectedGoalId} onChange={setSelectedGoalId} />
+        ) : (
+          <p className="text-xs text-zinc-500">
+            Working on:{' '}
+            <span className="text-zinc-300">{activeGoal ? activeGoal.title : 'Just work'}</span>
+          </p>
+        )}
+      </div>
 
       <div className="mt-5 flex gap-2">
         {status === 'idle' && (
@@ -75,13 +97,14 @@ export default function TimerCard() {
       </div>
 
       {pendingDuration !== null && (
-    <SessionModal
-      durationSeconds={pendingDuration}
-      uid={user.uid}
-      onClose={() => setPendingDuration(null)}
-      onSaved={() => setPendingDuration(null)}
-    />
-  )}
+        <SessionModal
+          durationSeconds={pendingDuration}
+          uid={user.uid}
+          goalId={selectedGoalId === 'none' ? null : selectedGoalId}
+          onClose={() => setPendingDuration(null)}
+          onSaved={handleSessionSaved}
+        />
+      )}
     </div>
   )
 }

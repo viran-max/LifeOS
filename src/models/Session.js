@@ -1,4 +1,4 @@
-export function createSession({ description, tags, durationSeconds, finishedAt = new Date() }) {
+export function createSession({ description, tags, durationSeconds, goalId = null, finishedAt = new Date() }) {
   return {
     description: description.trim(),
     tags: tags
@@ -6,6 +6,7 @@ export function createSession({ description, tags, durationSeconds, finishedAt =
       .map((tag) => tag.trim())
       .filter(Boolean),
     durationSeconds,
+    goalId,
     finishedAt: finishedAt.toISOString(),
   }
 }

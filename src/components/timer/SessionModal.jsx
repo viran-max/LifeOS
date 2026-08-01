@@ -3,7 +3,7 @@ import toast from 'react-hot-toast'
 import { createSession } from '../../models/Session'
 import { saveSession } from '../../services/sessionService'
 
-export default function SessionModal({ durationSeconds,uid, onClose, onSaved }) {
+export default function SessionModal({ durationSeconds, uid, goalId, onClose, onSaved }) {
   const [description, setDescription] = useState('')
   const [tags, setTags] = useState('')
   const [saving, setSaving] = useState(false)
@@ -16,7 +16,7 @@ export default function SessionModal({ durationSeconds,uid, onClose, onSaved }) 
     }
 
     setSaving(true)
-    const session = createSession({ description, tags, durationSeconds })
+    const session = createSession({ description, tags, durationSeconds, goalId })
     await saveSession(uid, session);
     setSaving(false)
 
