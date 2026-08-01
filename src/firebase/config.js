@@ -1,13 +1,12 @@
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDJFNHwSnE5WyvpASeQpftyeFJQpKnxi1s",
-  authDomain: "lifeos-3ab0e.firebaseapp.com",
-  projectId: "lifeos-3ab0e",
-  storageBucket: "lifeos-3ab0e.firebasestorage.app",
-  messagingSenderId: "202616616859",
-  appId: "1:202616616859:web:fb1ec34124ef3fe82f533e"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-// Initialize Firebase
 export const app = initializeApp(firebaseConfig);
